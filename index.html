@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Carta de Bienvenida Corporativa</title>
+<style>
+    body {
+        font-family: 'Arial', sans-serif;
+        margin: 0;
+        padding: 40px 0;
+        background-color: #f4f4f9;
+        color: #333333;
+    }
+    .carta-container {
+        background-color: #ffffff;
+        width: 210mm;
+        min-height: 297mm; /* Tamaño estándar A4 proporcional */
+        margin: 0 auto;
+        padding: 50px 60px;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+        box-sizing: border-box;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+    }
+    /* Encabezado */
+    .header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        border-bottom: 2px solid #003366;
+        padding-bottom: 20px;
+        margin-bottom: 40px;
+    }
+    .logo-texto {
+        font-size: 1.5em;
+        font-weight: bold;
+        color: #003366;
+        letter-spacing: 1px;
+    }
+    .logo {
+        max-height: 60px;
+    }
+    /* Cuerpo de la carta */
+    .fecha {
+        text-align: right;
+        font-size: 0.95em;
+        color: #666666;
+        margin-bottom: 30px;
+    }
+    .destinatario {
+        margin-bottom: 30px;
+        line-height: 1.6;
+    }
+    .destinatario h3 {
+        margin: 0;
+        color: #003366;
+        font-size: 1.2em;
+    }
+    .destinatario p {
+        margin: 3px 0;
+        color: #555555;
+        font-weight: bold;
+    }
+    .contenido-mensaje {
+        text-align: justify;
+        line-height: 1.8;
+        font-size: 1.05em;
+        margin-bottom: 50px;
+    }
+    /* Firma */
+    .firma-seccion {
+        margin-top: auto;
+        margin-bottom: 40px;
+    }
+    .firma-imagen {
+        display: block;
+        max-height: 70px;
+        margin-bottom: 10px;
+    }
+    .remitente-nombre {
+        font-weight: bold;
+        color: #222222;
+        margin: 0;
+    }
+    .remitente-puesto {
+        color: #666666;
+        margin: 3px 0 0 0;
+        font-size: 0.95em;
+    }
+    /* Pie de página */
+    .footer {
+        border-top: 1px solid #e0e0e0;
+        padding-top: 15px;
+        text-align: center;
+        font-size: 0.85em;
+        color: #777777;
+        line-height: 1.5;
+    }   
+</style>
+</head>
+<body>
+    <div class="carta-container">
+        <!-- Encabezado con Logo -->
+        <div class="header">
+            <!-- Si no hay URL de logo, se muestra el Nombre Corporativo como texto estilizado -->
+            <div id="empresa-nombre-header" class="logo-texto"></div>
+            <img id="logo" src="" alt="Logo" class="logo" style="display: none;">
+        </div>
+
+        <!-- Lugar y Fecha -->
+        <div id="fecha" class="fecha"></div>
+
+        <!-- Cuerpo de la carta -->
+        <div class="destinatario">
+            <h3 id="empleado-nombre"></h3>
+            <p id="empleado-puesto"></p>
+            <span id="empleado-depto" style="color: #888888; font-size: 0.9em;"></span>
+        </div>
+        
+        <div id="mensaje" class="contenido-mensaje"></div>
+
+        <!-- Sección de la firma -->
+        <div class="firma-seccion">
+            <p>Atentamente,</p>
+            <img id="firma-img" src="" alt="Firma" class="firma-imagen">
+            <p id="remitente-nombre" class="remitente-nombre"></p>
+            <p id="remitente-puesto" class="remitente-puesto"></p>
+        </div>
+
+        <!-- Pie de página -->
+        <div id="footer" class="footer"></div>
+    </div>
+
+<script>
+    fetch('Mensaje.json')
+    .then(response => {
+        if (!response.ok) {
+            throw new Error("No se pudo cargar el archivo JSON");
+        }
+        return response.json();
+    })
+    .then(data => {
+        // Control de logotipo o texto corporativo
+        if(data.empresa.logo_url && data.empresa.logo_url !== "") {
+            document.getElementById('logo').src = data.empresa.logo_url;
+            document.getElementById('logo').style.display = "block";
+        } else {
+            document.getElementById('empresa-nombre-header').innerText = data.empresa.nombre;
+        }
+
+        // Mapeo correcto respetando las mayúsculas de "Carta" en tu JSON
+        document.getElementById('fecha').innerText = `${data.Carta.ciudad}, ${data.Carta.fecha}`;
+        
+        // Corrección de los IDs (empleado en lugar de empelado)
+        document.getElementById('empleado-nombre').innerText = data.empleado.nombre;
+        document.getElementById('empleado-puesto').innerText = data.empleado.puesto;
+        document.getElementById('empleado-depto').innerText = `Departamento: ${data.empleado.departamento}`;
+        
+        // Estructura del Mensaje
+        document.getElementById('mensaje').innerHTML = `<p>${data.Carta.saludo},</p><p>${data.Carta.mensaje}</p>`;
+        
+        // Firma y Remitente (Corrección del datat)
+        document.getElementById('firma-img').src = data.remitente.firma_url;
+        document.getElementById('remitente-nombre').innerText = data.remitente.nombre;
+        document.getElementById('remitente-puesto').innerText = data.remitente.puesto;
+        
+        // Asignación de Footer (Corrección del == y variables de contacto)
+        document.getElementById('footer').innerHTML = `
+            <strong>${data.empresa.nombre}</strong> &bull; Conmutador: ${data.empresa.direccion} <br>
+            Sitio Web: <a href="https${data.empresa.web}" target="_blank" style="color: #777777; text-decoration: none;">${data.empresa.web.replace('://', '')}</a>
+        `;
+    })
+    .catch(error => {
+        console.error("Error al alimentar la carta:", error);
+    });
+</script>
+</body>
+</html>

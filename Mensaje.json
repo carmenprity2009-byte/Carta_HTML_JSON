@@ -1,0 +1,25 @@
+{
+ "empresa": {
+ "nombre": "Innovatech Solutions",
+ "logo_url": "https://www.invatech.com/uploads/1/4/5/7/145730039/invatech-logo_orig.png",
+ "direccion": "+52 (55) 5555-1234",
+ "web": "://innovatech.com"
+ },
+  "empleado": {
+    "nombre": "Carlos Mendoza",
+    "departamento": "Desarrollo de Software",
+    "puesto": "Ingeniero de software senior"
+  },
+  "remitente": {
+    "nombre": "Ana Gómez Villanueva",
+    "puesto": "Directora de Recursos Humanos",
+    "firma_url": "https://cdn.eldestapeweb.com/eldestape/122024/1734628600216.webp?cw=400&ch=225&extw=jpg"
+  },
+  "Carta":{
+    "fecha": "27 de septiembre de 2026",
+    "ciudad": "Ciudad de México",
+    "saludo": "Estimado(a) Carlos",
+    "mensaje": "Es un gran placer darte la bienvenida oficial a Invatech Solutions. Estamos muy entusiasmados de que te unas al equipo de Desarrollo de Software. Confiamos en que tu talento, experiencia y perspectiva serán clave para seguir alcanzando nuestras metas y llevar nuestros proyectos al siguiente nivel. Todo el equipo está listo para apoyarte en este nuevo inicio. ¡Mucho éxito!"
+
+  }
+}
